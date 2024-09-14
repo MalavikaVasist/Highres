@@ -43,6 +43,7 @@ class SpectrumMaker():
             species=['H2O_main_iso', 'CO_main_iso', 'CO_36'], 
             include_clouds=False,
             lbl_opacity_sampling=5, scat=True, pressures=None):
+        
         self.species = species
         self.param_set = param_set
         self.spectral_resolution = spectral_resolution
@@ -52,7 +53,9 @@ class SpectrumMaker():
         else:
             self.pressures = pressures
         self.include_clouds = include_clouds
+        print(self.include_clouds)
         wlen_range = np.array([np.min(self.wavelengths), np.max(self.wavelengths)])
+        
         if include_clouds:
             self.atmosphere= Radtrans(line_species=species,rayleigh_species = ['H2', 'He'],
                                       continuum_opacities = ['H2-H2', 'H2-He'],
@@ -76,6 +79,7 @@ class SpectrumMaker():
 
     def get_spectrum(self, params):
         gravity = 10**params['log_g']
+
         if 'full_PT' in params:
             temperature = params['full_PT']
         else:
@@ -85,9 +89,11 @@ class SpectrumMaker():
             Pquench = 10**params['log_Pquench']
         else:
             Pquench = None
+
         abunds = abundances(self.pressures, temperature, params['FEH'], params['C_O'], Pquench)
         mass_fractions = self.get_abundance_dict(abunds, params['log_iso_rat'])
         MMW = abunds['MMW']
+
         if self.include_clouds:
             eq_MgSiO3 = return_XMgSiO3(params['FEH'], params['C_O'])
             P_base_MgSiO3 = simple_cdf_MgSiO3(self.pressures, temperature, params['FEH'], params['C_O'], np.mean(MMW))
@@ -103,6 +109,7 @@ class SpectrumMaker():
                               (self.pressures[self.pressures <= P_base_Fe]/P_base_Fe)**params['fsed']
 
             Kzz = 10**params['log_Kzz']*np.ones_like(temperature)
+            
         if self.include_clouds:
             self.atmosphere.calc_flux(temperature, mass_fractions, gravity, MMW,
                                 Kzz=Kzz,

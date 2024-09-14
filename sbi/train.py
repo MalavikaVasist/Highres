@@ -27,7 +27,7 @@ from lampe.nn import ResMLP
 from lampe.utils import GDStep
 
 from zuko.flows import NAF
-from generate import param_set
+from generate_thisisOLD import param_set
 from parameter import *
 
 #from ees import Simulator, LOWER, UPPER

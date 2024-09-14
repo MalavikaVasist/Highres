@@ -2,7 +2,7 @@ from parameter import *
 
 
 with_isotope = True
-include_clouds = True
+include_clouds = False
 #Define parameters
 FeH = Parameter('FEH', uniform_prior(-1.5, 1.5))
 CO = Parameter('C_O', uniform_prior(0.1, 1.6))
@@ -24,6 +24,7 @@ log_Pquench = Parameter('log_Pquench', uniform_prior(-6, 3))
 
 param_set = ParameterSet([FeH, CO, log_g, T_int, T1, T2, T3, alpha, log_delta, log_Pquench])
 
+param_list = [FeH, CO, log_g, T_int, T1, T2, T3, alpha, log_delta, log_Pquench] 
 
 if include_clouds:
     MgSiO3 = Parameter('log_MgSiO3', uniform_prior(-2.3, 1))
@@ -33,16 +34,20 @@ if include_clouds:
     sigma_lnorm= Parameter('sigma_lnorm', uniform_prior(1.05, 3))
     param_set.add_params([Fe, fsed, Kzz, sigma_lnorm])
 
+    param_list += [Fe, fsed, Kzz, sigma_lnorm] 
+
+
 iso_rat = Parameter('log_iso_rat', uniform_prior(-11, -1))
 if with_isotope:
     param_set.add_params(iso_rat)
+
+param_list +=  [iso_rat]
+
 
 ndim = param_set.N_params
 species = ['CO_main_iso', 'H2O_main_iso']
 if with_isotope:
     species += ['CO_36']
-
-param_list = [FeH, CO, log_g, T_int, T1, T2, T3, alpha, log_delta, log_Pquench, Fe, fsed, Kzz, sigma_lnorm, iso_rat]
 
 ## Non pRT params included here
 radius = Parameter('radius', uniform_prior(0.8, 2.0))
@@ -72,10 +77,10 @@ LABELS, LOWER, UPPER = zip(*[
 [                  r'$alpha$',  1.0, 2.0],   # temp_node_4
 [                  r'$log_delta$', 3.0, 8.0],   # temp_node_3
 [                  r'$log_Pquench$', -6.0, 3.0],   # temp_node_6
-[                  r'$logFe$',  -2.3, 1.0], # CH4_mol_scale
-[                  r'$fsed$',  0.0, 10.0],   # temp_node_8
-[                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
-[                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
+# [                  r'$log_Fe$',  -2.3, 1.0], # CH4_mol_scale
+# [                  r'$fsed$',  0.0, 10.0],   # temp_node_8
+# [                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
+# [                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
 [                  r'$log\_iso\_rat$',  -11.0, -1.0],   # temp_node_7
 [                  r'$R\_P$', 0.8, 2.0],             # R_P / R_Jupyter
 [                  r'$rv$',  10.0, 30.0], # NH3_mol_scale 20, 35

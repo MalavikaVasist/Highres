@@ -2,7 +2,7 @@ from pathlib import Path
 import numpy as np
 import astropy.constants as const
 import astropy.units as u
-
+print(__name__)
 
 class Data():
     def __init__(self, path= '/home/mvasist/Highres/observation/data/data_to_fit.dat'):

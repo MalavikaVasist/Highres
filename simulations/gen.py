@@ -45,10 +45,10 @@ LABELS, LOWER, UPPER = zip(*[
 [                  r'$alpha$',  1.0, 2.0],   # temp_node_4
 [                  r'$log_delta$', 3.0, 8.0],   # temp_node_3
 [                  r'$log_Pquench$', -6.0, 3.0],   # temp_node_6
-[                  r'$logFe$',  -2.3, 1.0], # CH4_mol_scale
-[                  r'$fsed$',  0.0, 10.0],   # temp_node_8
-[                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
-[                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
+# [                  r'$logFe$',  -2.3, 1.0], # CH4_mol_scale
+# [                  r'$fsed$',  0.0, 10.0],   # temp_node_8
+# [                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
+# [                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
 [                  r'$log\_iso\_rat$',  -11.0, -1.0],   # temp_node_7
 [                  r'$R\_P$', 0.8, 2.0],             # R_P / R_Jupyter
 [                  r'$rv$', 10, 30 ], # NH3_mol_scale [20.0, 35.0]
@@ -65,7 +65,7 @@ d = Data()
 scratch = os.environ.get('GLOBALSCRATCH', '')
 path = Path(scratch) / 'Highres/simulations/'
 path.mkdir(parents= True, exist_ok=True)
-# path_full = Path(scratch) / 'highres-sbi/sim_fulltheta'
+path_full = Path(scratch) / 'highres-sbi/data_fulltheta'
 # path_full.mkdir(parents=True, exist_ok=True)
 
 sim = SpectrumMaker(wavelengths=d.model_wavelengths, param_set=param_set, lbl_opacity_sampling=2)
@@ -93,9 +93,6 @@ def simulator(theta): #theta = values_actual here
 def simulate(i:int):
     prior = BoxUniform(torch.tensor(LOWER), torch.tensor(UPPER))
     loader = JointLoader(prior, simulator, batch_size=16, numpy=False) #the simulator takes actual values
-
-    # simulator = SpectrumMaker(wavelengths=wavelengths, param_set=param_set, lbl_opacity_sampling=2)
-    # loader = JointLoader(param_set, simulator, batch_size=16, numpy=False)
 
     def filter_nan(theta, x):
         # print(theta.shape, x.shape)
@@ -173,7 +170,7 @@ def simulate(i:int):
 #######################################################################################################
 
 #@after(simulate)
-@job(array=26111, cpus=1, ram='32GB', time='01:00:00')
+@job(array=26111, cpus=1, ram='32GB', time='01:00:00') #117664
 def revaggregate(i: int):
     file = 'train.h5'
     torch.manual_seed(0)
