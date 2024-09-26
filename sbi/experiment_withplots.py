@@ -489,7 +489,10 @@ def experiment(index: int) -> None:
             fig, ax = plt.subplots(figsize=(4,4))
 
             # fig_pt = PT_plot(fig, ax, theta_filterLD[:2**8, :-1], theta_star, invert = True)
-            fig_pt = PT_plot(fig, ax, self.theta[:2**8, :-1], invert = True)
+            fig_pt = PT_plot(fig, ax, self.theta[:2**8, :-1], invert = True, \
+                             legend_fontsize = 12, fontsize= 16, \
+                                xtick_labelsize = 12 , ytick_labelsize = 12) #, self.theta_star)
+    #         
             fig_pt.savefig(self.savepath_plots / 'pt_profile.pdf')
             return fig_pt
 

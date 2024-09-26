@@ -9,6 +9,8 @@ from parameter_set_script import param_set, param_list, param_list_ext, param_se
 sys.path.insert(0, '/home/mvasist/Highres/sbi/')
 from added_scripts.adding_legends import legends
 
+import matplotlib.pyplot as plt
+
 from lampe.plots import LinearAlphaColormap
 
 sim_res = 2e5
@@ -26,7 +28,13 @@ def levels_and_creds(creds, alpha):
     
     return levels, creds
 
-def PT_plot(fig, ax, theta, theta_nom= None, color = 'steelblue', creds= [0.997, 0.955, 0.683], alpha = [0, 0.9], invert= False):
+def PT_plot(fig, ax, theta, theta_nom= None, color = 'steelblue', creds= [0.997, 0.955, 0.683], alpha = [0, 0.9], invert= False, \
+            labelsize = 16, legend_fontsize = 17, titlesize = 20, fontsize= 16, \
+                   xtick_labelsize = 12 , ytick_labelsize = 12):
+    
+    params = {'axes.labelsize': labelsize,'axes.titlesize': titlesize, 'font.size': fontsize, 'legend.fontsize': legend_fontsize, 'xtick.labelsize': xtick_labelsize, 'ytick.labelsize': ytick_labelsize}
+    
+    plt.matplotlib.rcParams.update(params)
     
     levels, creds = levels_and_creds(creds, alpha)
     cmap= LinearAlphaColormap(color, levels=creds, alpha=alpha)
@@ -56,12 +64,13 @@ def PT_plot(fig, ax, theta, theta_nom= None, color = 'steelblue', creds= [0.997,
 
     # ax.set_xticklabels(np.arange(500,4000,500),fontsize=8)
     # ax.set_yticklabels(np.arange(1e-2, 1e1, np.log10(0.1)),fontsize=8)
-    ax.set_xlabel(r'Temperature $(\mathrm{K})$', fontsize= 10)
-    ax.set_ylabel(r'Pressure $(\mathrm{bar})$', fontsize= 10)
+    ax.set_xlabel(r'Temperature $(\mathrm{K})$') #, fontsize= 10)
+    ax.set_ylabel(r'Pressure $(\mathrm{bar})$') #, fontsize= 10)
     ax.set_xlim(0, 2000)
 #     ax.set_ylim(1e-2, 1e1)
     ax.set_yscale('log')
-    ax.legend(handles, texts, prop={'size': 8})
+    plt.subplots_adjust(bottom=0.15)
+    ax.legend(handles, texts) #, prop={'size': 8})
     if invert :
         ax.invert_yaxis()
 #     ax.grid()
