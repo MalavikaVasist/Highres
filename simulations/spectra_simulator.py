@@ -53,7 +53,7 @@ class SpectrumMaker():
         else:
             self.pressures = pressures
         self.include_clouds = include_clouds
-        print(self.include_clouds)
+        # print(self.include_clouds)
         wlen_range = np.array([np.min(self.wavelengths), np.max(self.wavelengths)])
         
         if include_clouds:
@@ -83,6 +83,7 @@ class SpectrumMaker():
         if 'full_PT' in params:
             temperature = params['full_PT']
         else:
+            # print(params, self.pressures)
             temperature = make_pt(params, self.pressures)
         
         if 'log_Pquench' in params.keys():
@@ -117,17 +118,21 @@ class SpectrumMaker():
                                 sigma_lnorm = params['sigma_lnorm'])
 
         else:
-            self.atmosphere.calc_flux(temperature, mass_fractions, gravity, MMW)
+            self.atmosphere.calc_flux(temperature, mass_fractions, gravity, MMW, contribution = True,)
         
-        wl = const.c.to(u.km/u.s).value/self.atmosphere.freq/1e-9
+        self.wl = const.c.to(u.km/u.s).value/self.atmosphere.freq/1e-9
+        # print(wl)
+        # print(self.wavelengths)
         flux = self.atmosphere.flux * u.erg/u.cm**2/u.s/u.Hz
-        flux = flux *const.c/(wl*u.micron)**2
+        flux = flux *const.c/(self.wl*u.micron)**2
         flux = flux.to(u.W/u.m**2/u.micron)
-        wl_8 = np.round(wl,8)
+        # wl_8 = np.round(wl,8)
         # print(np.round(wl,8), self.wavelengths)
-        spec = np.interp(self.wavelengths, wl, flux)
+        spec = np.interp(self.wavelengths, self.wl, flux)
         # spec = flux[wl_8 == self.wavelengths]  
         # spec = spectrum(flux, wl).at(self.wavelengths)
+        # print(np.shape(flux))
+
         '''
         waves_even = np.linspace(np.min(wl), np.max(wl), wl.size)
         spec = fastRotBroad(waves_even, spec.at(waves_even), params['limb_dark'], params['vsini'])
@@ -135,7 +140,7 @@ class SpectrumMaker():
         spec = Spectrum(spec, shifted_wl)
         spec = convolve_to_resolution(spec, self.spectral_resolution)
         '''
-        return spec
+        return self.wavelengths, spec, self.atmosphere
 
     def get_abundance_dict(self, abunds, log_iso_rat=None):
         mass_fractions = {}

@@ -2,13 +2,26 @@ from pathlib import Path
 import numpy as np
 import astropy.constants as const
 import astropy.units as u
+import os
+scratch = os.environ.get('SCRATCH') 
+home = os.environ.get('HOME')
+
+import sys
+# sys.path.insert(0, str(Path(home) / 'WISEJ1738/sbi_ear'))
+
 print(__name__)
 
 class Data():
-    def __init__(self, path= '/home/mvasist/Highres/observation/data/data_to_fit.dat'):
+    def __init__(self, path= '/home/mvasist/Highres/Sam/obs/DENIS_J0255_ergscm2nm/data_to_fit.dat'):
         self.path = Path(path)
         self.data = np.loadtxt(self.path)
-        self.wl, f, er, _, trans = self.data.T
+        if path == '/home/mvasist/Highres/Sam/obs/DENIS_J0255_ergscm2nm/data_to_fit.dat':
+            self.wl, f, er = self.data.T
+            print('loading new data')
+        elif path == '/home/mvasist/Highres/Sam/obs/spectrum_obs_old_ergscm2nm/data_to_fit.dat':
+            self.wl, f, er, _, trans = self.data.T
+            print('loading old data')
+
         self.flux, self.flux_scaling, self.err = self.FluxandError_processing(f, er)
         self.model_wavelengths = self.get_modelW()
         self.data_wavelengths = self.wl/1000

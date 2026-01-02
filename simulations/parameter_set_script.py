@@ -1,4 +1,4 @@
-from parameter import *
+from simulations.parameter import *
 
 
 with_isotope = True
@@ -66,26 +66,46 @@ def deNormVal(values, param_list):
     return values_actual
 
 
+# LABELS, LOWER, UPPER = zip(*[
+# [                  r'$FeH$',  -1.5, 1.5],   # temp_node_9
+# [                  r'$CO$',  0.1, 1.6],  # CO_mol_scale
+# [                  r'$\log g$',   2.5, 5.5],          # log g
+# [                  r'$Tint$',  300,   3500],   # temp_node_5
+# [                  r'$T1$',  300,   3500],      # T_bottom
+# [                  r'$T2$',  300,   3500],   # temp_node_1
+# [                  r'$T3$',  300,   3500],   # temp_node_2
+# [                  r'$alpha$',  1.0, 2.0],   # temp_node_4
+# [                  r'$log_delta$', 3.0, 8.0],   # temp_node_3
+# [                  r'$log_Pquench$', -6.0, 3.0],   # temp_node_6
+# # [                  r'$log_Fe$',  -2.3, 1.0], # CH4_mol_scale
+# # [                  r'$fsed$',  0.0, 10.0],   # temp_node_8
+# # [                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
+# # [                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
+# [                  r'$log\_iso\_rat$',  -11.0, -1.0],   # temp_node_7
+# [                  r'$R\_P$', 0.8, 2.0],             # R_P / R_Jupyter
+# [                  r'$rv$',  10.0, 30.0], # NH3_mol_scale 20, 35
+# [                  r'$vsini$', 0.0, 50 ], # H2S_mol_scale 10.0, 30.0
+# [                  r'$limb\_dark$',  0.0, 1.0], # PH3_mol_scale
+# [                  r'$b$',  1, 20.0], # PH3_mol_scale
+
+# ])
+
 LABELS, LOWER, UPPER = zip(*[
-[                  r'$FeH$',  -1.5, 1.5],   # temp_node_9
-[                  r'$CO$',  0.1, 1.6],  # CO_mol_scale
-[                  r'$\log g$',   2.5, 5.5],          # log g
-[                  r'$Tint$',  300,   3500],   # temp_node_5
-[                  r'$T1$',  300,   3500],      # T_bottom
-[                  r'$T2$',  300,   3500],   # temp_node_1
-[                  r'$T3$',  300,   3500],   # temp_node_2
-[                  r'$alpha$',  1.0, 2.0],   # temp_node_4
-[                  r'$log_delta$', 3.0, 8.0],   # temp_node_3
-[                  r'$log_Pquench$', -6.0, 3.0],   # temp_node_6
-# [                  r'$log_Fe$',  -2.3, 1.0], # CH4_mol_scale
-# [                  r'$fsed$',  0.0, 10.0],   # temp_node_8
-# [                  r'$logKzz$',  5.0, 13.0], # H2O_mol_scale \_mol\_scale
-# [                  r'$sigmalnorm$',  1.05, 3.0], # C2O_mol_scale
-[                  r'$log\_iso\_rat$',  -11.0, -1.0],   # temp_node_7
-[                  r'$R\_P$', 0.8, 2.0],             # R_P / R_Jupyter
+[                  r'$\left[{\rm Fe/H}\right]$', -1.5,   1.5],  # [Fe/H]
+[                  r'${\rm C/O}$',  0.1,   1.6],  # C/O
+[                  r'$\log \, g$',   2.5, 6.5],          # log g
+[                  r'$T_{\rm int}$',  300,   5500],   # temp_node_5
+[                  r'$T_1$',  300,   3500],      # T_bottom
+[                  r'$T_2$',  300,   3500],   # temp_node_1
+[                  r'$T_3$',  300,   3500],   # temp_node_2
+[                  r'$\alpha$',   1.,    2.],  # alpha
+[                  r'$\log \delta$',   3.0,    8.0],  # ∝ log delta / alpha
+[                  r'$\log P_{\rm q}$',  -6.,    3.],  # log P_quench
+[                  r'$log iso rat$',  -11.0, -1.0],   # temp_node_7
+[                  r'$R_{\rm P}$', 0.6, 2.0],             # R_P / R_Jupyter
 [                  r'$rv$',  10.0, 30.0], # NH3_mol_scale 20, 35
 [                  r'$vsini$', 0.0, 50 ], # H2S_mol_scale 10.0, 30.0
-[                  r'$limb\_dark$',  0.0, 1.0], # PH3_mol_scale
+[                  r'$limb dark$',  0.0, 1.0], # PH3_mol_scale
 [                  r'$b$',  1, 20.0], # PH3_mol_scale
 
 ])

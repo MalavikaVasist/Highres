@@ -10,11 +10,13 @@ from DataProcuring import Data
 
 
 class ProcessSpec():
-    d = Data()
-    data_wavelengths = d.data_wavelengths
-    model_wavelengths = d.model_wavelengths
-    flux_scaling = d.flux_scaling
-    data_wavelengths_norm = d.data_wavelengths_norm
+
+    def __init__(self, d):
+        self.d = d
+        self.data_wavelengths = d.data_wavelengths
+        self.model_wavelengths = d.model_wavelengths
+        self.flux_scaling = d.flux_scaling
+        self.data_wavelengths_norm = d.data_wavelengths_norm
     
     def __call__(self, theta, x, sample= True, values_ext_actual= [[0,0,0,0]]):
         self.sample = sample
@@ -41,7 +43,9 @@ class ProcessSpec():
     def process_x(self):
         batch_size = self.theta.shape[0]
         x_obs = np.zeros((batch_size, 2, self.data_wavelengths.size))
+        # print(batch_size, np.shape(x_obs))
         for i, xi, theta_ext_i in zip(range(self.x.shape[0]), self.x, self.theta_ext):
+            # print(i, xi, theta_ext_i)
             param_dict = self.param_set_ext.param_dict(theta_ext_i)
             #Apply radius scaling
             xi = xi * param_dict['radius']**2
